@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
+import FlexibleInput from '../flexible-input/index'
 
 
 /**
@@ -22,6 +23,7 @@ export interface ColumnsAttr{
 interface Props{
     dataSource: Array<any>,
     columns:  ColumnsAttr[],
+    changeDataSource?: (rowId: number, keyValue: string, value: string)=>void
 }
 
 /**
@@ -30,14 +32,15 @@ interface Props{
  * @param {Columns[]} columns 表头列表
  */
 const _mergedataSourceAndColumns = (dataSource:[], columns: ColumnsAttr[]): [] => {
-    
     return []
 }
 
 
-const Editable: React.FunctionComponent<Props> = (props: Props): ReactElement=>{
-    const { dataSource=[], columns=[] } = props;
 
+
+const Editable: React.FunctionComponent<Props> = (props: Props): ReactElement=>{
+    const { dataSource=[], columns=[], changeDataSource=(rowId, keyValue, value)=>{console.log("不支持修改")} } = props;
+    
     return (
         <table>
             <thead>
@@ -61,7 +64,7 @@ const Editable: React.FunctionComponent<Props> = (props: Props): ReactElement=>{
                                 columns.map(({title, value, key=null, render=null}, c_i)=>{
                                     return (
                                         <td key={key}>    
-                                            {render ? render(v): v[value]}
+                                            {render ? render(v): (<FlexibleInput value={v[value]} onChange={(inputNewValue)=>changeDataSource(row_id, value, inputNewValue)}/>)}
                                         </td>
                                     )
                                 }) 

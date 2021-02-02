@@ -3,6 +3,7 @@ import * as ReactDOM from 'react-dom';
 import { useState, ReactElement, useEffect } from 'react';
 import Editable, {ColumnsAttr} from './components/editable/Editable';
 
+
 const EditablePage = (props: any): ReactElement => {
 
     const [dataSource, setDataSource]  = useState([]);
@@ -15,6 +16,17 @@ const EditablePage = (props: any): ReactElement => {
             age: 19,
         }])
     }, [])
+
+    /**
+     * 修改数据源
+     * @param rowId  行ID
+     * @param key    对应的key值
+     * @param value  新的值
+     */
+    const changeDataSource = (rowId: number, key: string, value: string): void => {
+        dataSource[rowId][key] = value
+        setDataSource(JSON.parse(JSON.stringify(dataSource)))
+    }
 
     const columns: ColumnsAttr[] = [
         {
@@ -38,7 +50,7 @@ const EditablePage = (props: any): ReactElement => {
 
     return (
         <div>
-            <Editable dataSource={dataSource} columns={columns} />
+            <Editable dataSource={dataSource} columns={columns} changeDataSource={changeDataSource} />
         </div>
     )
 }
